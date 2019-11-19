@@ -12,6 +12,7 @@
     {% block javascripts %}{% endblock %}
 </head>
 <body>
+{{ render(controller("App\\Controller\\MenuController::index")) }}
 
 {% block body %}{% endblock %}
 {% block footer %}

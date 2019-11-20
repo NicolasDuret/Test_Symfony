@@ -10,15 +10,19 @@
                 <th>Nom</th>
                 <th>Reference</th>
                 <th>Description</th>
-                <th></th>
+                <th>EAN</th>
             </tr>
             {% for prod in produits %}
                 <tr>
                     <td>{{ prod.Nom }}</td>
                     <td>{{ prod.Reference }}</td>
                     <td>{{ prod.Description }}</td>
-                 </tr>
+                    <td>{{ prod.EAN }}</td>
+                    <td><a href="{{ path("produit_modifier", { "id":prod.id}) }}" class="btn btn-info"><i class="far fa-edit"></i>Modifier un Produit</a></td>
+                    <td><a href="{{ path("produit_supprimer", { "id":prod.id}) }}" class="btn btn-info"><i class="far fa-edit"></i>Supprimer un Produit</a></td>
+
+                </tr>
             {% endfor %}
         </table>
         <a href="{{ path("produit_ajouter") }}" class="btn btn-success">Ajouter un Produit</a>
-    {% endblock %}
+        {% endblock %}

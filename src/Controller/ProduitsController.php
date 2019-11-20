@@ -17,7 +17,7 @@ class ProduitsController extends AbstractController
     {
         $repository=$this->getDoctrine()->getRepository( Produit::class);
         $produits = $repository->findAll();
-        return $this->render('produits/index.html.twig', [
+        return $this->render('produits/_produit.html.twig', [
             'produits' => $produits,
         ]);
     }
@@ -37,9 +37,57 @@ class ProduitsController extends AbstractController
             return $this->redirectToRoute("produits");
         }
 
-        return $this->render('produits/fomulaire.html.twig', [
+        return $this->render('produits/formulaire.html.twig', [
             'formulaire' => $formulaire->createView(),
-            'h2' => "Ajouter un produit"
+            'h1' => "Ajouter un produit"
         ]);
     }
+
+    /**
+     * @Route("/produits/supprimer/{id}", name="produit_supprimer")
+     */
+    public function supprimer(Request $request, $id)
+    {
+
+
+        //je vais chercher l'objet à supprimer
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository(Produit::class);
+        $produit = $repository->find($id);
+
+        $em->remove($produit);
+        $em->flush();
+
+        return $this->render('produits/_produit.html.twig', [
+            "produits" => $produit,
+            'controller_name' => 'ProduitsController',
+        ]);
+    }
+
+
+    /**
+     * @Route("/produits/modifier/{id}",name="produit_modifier")
+     */
+    public function modifier(Request $request, $id){
+
+        $repository=$this->getDoctrine()->getRepository(Produit::class);
+        $produit=$repository->find($id);
+        $formulaire=$this->createForm(FormulaireType::class, $produit);
+        $formulaire->handleRequest($request);
+
+        if($formulaire->isSubmitted() && $formulaire->isValid()){
+            $em=$this->getDoctrine()->getManager();
+
+            $em->persist($produit);
+            $em->flush();
+
+            return $this->redirectToRoute("produits");
+        }
+
+        return $this->render('produits/formulaire.html.twig',[
+            "formulaire"=>$formulaire->createView(),
+            "h1"=>"Modifier une catégorie".$produit->getNom()
+        ]);
+    }
+
 }

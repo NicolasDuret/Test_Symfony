@@ -1,0 +1,24 @@
+
+    {% extends 'base.html.twig' %}
+
+    {% block title %}Liste des produits{% endblock %}
+
+    {% block body %}
+        <h1>Liste des produits</h1>
+        <table class="table">
+            <tr>
+                <th>Nom</th>
+                <th>Reference</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            {% for prod in produits %}
+                <tr>
+                    <td>{{ prod.Nom }}</td>
+                    <td>{{ prod.Reference }}</td>
+                    <td>{{ prod.Description }}</td>
+                 </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ path("produit_ajouter") }}" class="btn btn-success">Ajouter un Produit</a>
+    {% endblock %}
